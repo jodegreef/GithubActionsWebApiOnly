@@ -39,7 +39,7 @@ jobs:
     needs: build
     environment:
       name: 'Dev'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url-dev }}
+      url: ${{ steps.deploy-to-webapp-dev.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
