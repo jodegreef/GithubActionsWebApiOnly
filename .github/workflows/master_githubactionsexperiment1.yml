@@ -56,6 +56,19 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
           package: .
 
+  deploy-prod:
+    runs-on: windows-latest
+    needs: [build, deploy]
+    environment:
+      name: 'Dev'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
       - name: Deploy to Azure Web App PROD
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
