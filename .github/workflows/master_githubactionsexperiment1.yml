@@ -38,7 +38,7 @@ jobs:
     runs-on: windows-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'Dev'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -47,7 +47,16 @@ jobs:
         with:
           name: .net-app
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure Web App DEV
+        id: deploy-to-webapp-dev
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'githubactionsexperiment1-dev'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
+          package: .
+
+      - name: Deploy to Azure Web App PORD
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
