@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,12 @@ namespace GithubActionsWebApiOnly.Controllers
         };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly IConfiguration _config;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IConfiguration configuration)
     {
       _logger = logger;
+      _config = configuration;
     }
 
     [HttpGet]
@@ -31,7 +34,7 @@ namespace GithubActionsWebApiOnly.Controllers
       {
         Date = DateTime.Now.AddDays(index),
         TemperatureC = rng.Next(-20, 55),
-        Summary = Summaries[rng.Next(Summaries.Length)]
+        Summary = _config["WhatEnvIsThis"] + Summaries[rng.Next(Summaries.Length)]
       })
       .ToArray();
     }
